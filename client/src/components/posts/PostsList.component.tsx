@@ -4,34 +4,36 @@ import { useListPosts } from "@/hooks/posts/useListPosts";
 const PostsList = () => {
   const { data: posts, isLoading, error } = useListPosts();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (isLoading) return <p className="mt-8 text-center">Chargement…</p>;
+  if (error)
+    return (
+      <p className="mt-8 text-center text-red-600">Erreur : {error.message}</p>
+    );
+
+  if (!posts?.length) {
+    return (
+      <section className="mt-8 text-center text-gray-600">
+        Aucun post disponible.
+      </section>
+    );
+  }
 
   return (
-    <div className="flex flex-col items-center gap-y-6">
-      {posts?.length ? (
-        <>
-          {/* Hero post */}
-          <div className="w-full max-w-[1170px]">
-            <PostCard post={posts[0]} large />
-          </div>
+    <section className="max-w-4xl px-4 mx-auto mt-10 space-y-8">
+      {/* Hero post */}
+      <section>
+        <PostCard post={posts[0]} large />
+      </section>
 
-          {/* Deux posts côte à côte */}
-          <div className="flex flex-wrap gap-6 w-full max-w-[1170px]">
-            {posts.slice(1, 3).map((post, idx) => (
-              <div
-                key={post.title + idx}
-                className="w-full md:w-[calc(50%-12px)]"
-              >
-                <PostCard post={post} />
-              </div>
-            ))}
+      {/* Deux posts côte à côte */}
+      <section className="flex flex-col md:flex-row md:gap-6">
+        {posts.slice(1, 3).map((post) => (
+          <div key={post._id} className="flex-1 mb-6 md:mb-0">
+            <PostCard post={post} />
           </div>
-        </>
-      ) : (
-        <p className="text-gray-500">No posts available.</p>
-      )}
-    </div>
+        ))}
+      </section>
+    </section>
   );
 };
 

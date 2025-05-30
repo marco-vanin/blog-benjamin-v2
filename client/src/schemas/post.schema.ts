@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const postSchema = z.object({
+  _id: z.string().optional(),
   title: z.string(),
   content: z.string(),
   author: z.string(),

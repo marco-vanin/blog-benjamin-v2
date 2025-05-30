@@ -11,5 +11,17 @@ export function useListPosts() {
       if (!parsed.success) throw new Error("Invalid post data from server");
       return parsed.data;
     },
+    select: (posts) =>
+      posts.map((post) => ({
+        ...post,
+        createdAt:
+          typeof post.createdAt === "string"
+            ? new Date(post.createdAt)
+            : post.createdAt,
+        updatedAt:
+          typeof post.updatedAt === "string"
+            ? new Date(post.updatedAt)
+            : post.updatedAt,
+      })),
   });
 }
